@@ -2,23 +2,68 @@
 var init = function (TODO) {
     //根据TODO,画一个界面
     for(var i = 0; i < getObjLength(TODO); i++) {
-        $('#id-div-todoList')[0].insertAdjacentHTML('beforeend', `
+        if(TODO[i].finished) {
+            //完成了,就返回一个撤回的svg
+            $('#id-div-todoList')[0].insertAdjacentHTML('beforeend', `
             <div class="oneThing">
-                <button class="button-finish">完成</button>
-                <button class="button-delete">删除</button>
-                <button class="button-edit">编辑</button>
+                <button class="button-finish">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-cancel"></use>                  
+                    </svg>
+                </button>
                 
+                <button class="button-delete">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-shanchu"></use>
+                    </svg>
+                </button>
+                
+                <button class="button-edit">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-bianji"></use>
+                    </svg>
+                </button>
+                <span class="span-index finished">${TODO[i].index}</span>
+                <span class="span-text finished">${TODO[i].text}</span>
+                <span class="span-startTime finished">${TODO[i].startTime}</span>
+                <span class="span-endTime finished">${TODO[i].endTime}</span>
+            </div>
+        `)
+        }else {
+            //没完成,就返回一个完成的svg
+            $('#id-div-todoList')[0].insertAdjacentHTML('beforeend', `
+            <div class="oneThing">
+                <button class="button-finish">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-wancheng"></use>                  
+                    </svg>
+                </button>
+                
+                <button class="button-delete">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-shanchu"></use>
+                    </svg>
+                </button>
+                
+                <button class="button-edit">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-bianji"></use>
+                    </svg>
+                </button>
+                <span class="span-index">${TODO[i].index}</span>
                 <span class="span-text">${TODO[i].text}</span>
                 <span class="span-startTime">${TODO[i].startTime}</span>
                 <span class="span-endTime">${TODO[i].endTime}</span>
             </div>
         `)
+        }
     }
 }
 
 //原先是从本地载入，现在我要通过ajax向服务器拿数据了,服务器存的是JSON,我要转成string
 var load = function (TODO) {
     var callback = function(data) {
+        //如果用户自己上传文件的话,TODO就要改变
         TODO = JSON.parse(data)
         //这里需要一个根据TODO来初始化的问题
         init(TODO)
@@ -34,6 +79,7 @@ var load = function (TODO) {
         error: function() {
             log('失败')
             console.log('错误！',arguments)
+            bindEvents(TODO)
         }
     })
 }
@@ -57,7 +103,15 @@ var save = function (TODO) {
 //获得时间
 var getTime = function () {
     var t = new Date()
-    return (t.getMonth() + 1) + "月" + t.getDate() + "日 " + t.getHours() + ":" + t.getMinutes() + ":" + t.getSeconds()
+    return formatTime(t.getMonth() + 1) + "月" + formatTime(t.getDate()) + "日 " + formatTime(t.getHours()) + ":" + formatTime(t.getMinutes()) + ":" + formatTime(t.getSeconds())
+}
+
+var formatTime = function (n) {
+    if(n < 10) {
+        return '0' + n
+    }else {
+        return n
+    }
 }
 
 //绑定add
@@ -68,49 +122,64 @@ var bindEventClickAdd = function (TODO) {
             text: $('#id-input-text').val(),
             startTime: 'startTime: ' + getTime(),
             endTime: ``,
+            finished:false,
         }
-
-        $('#id-div-todoList')[0].insertAdjacentHTML('beforeend', `
-
+        if(list.text == '') {
+            log('你咋啥都没填?')
+        }else {
+            $('#id-div-todoList')[0].insertAdjacentHTML('beforeend', `
             <div class="oneThing">
-                <button class="button-finish">完成</button>
-                <button class="button-delete">删除</button>
-                <button class="button-edit">编辑</button>
+                <button class="button-finish">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-wancheng"></use>
+                    </svg>
+                </button>
                 
+                <button class="button-delete">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-shanchu"></use>
+                    </svg>
+                </button>
+                
+                <button class="button-edit">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-bianji"></use>
+                    </svg>
+                </button>
+                <span class="span-index">${list.index}</span>
                 <span class="span-text">${list.text}</span>
                 <span class="span-startTime">${list.startTime}</span>
                 <span class="span-endTime"></span>
-            </div>
-                      
+            </div> 
         `)
-
-        TODO.push(list)
-        save(TODO)
+            TODO.push(list)
+            save(TODO)
+        }
     })
 }
 
 //绑定reset
 var bindEventClickReset = function (TODO) {
-    $('#id-button-reset').on('click', function () {
-        var todoList = $('#id-div-todoList')
-        var input = $('#id-input-text')
-        input.val("")
-        todoList.html("")
-        TODO.length = 0
-        save(TODO)
+    $('#id-button-RESET').on('click', function () {
+        if (!confirm("还想重置?事都干完了?")) {
+            log('你咋反悔了?')
+        }else {
+            var todoList = $('#id-div-todoList')
+            var input = $('#id-input-text')
+            input.val("")
+            todoList.html("")
+            TODO.length = 0
+            save(TODO)
+        }
     })
 }
 
 //获取当前list.index
 var getIndexTODO = function (TODO, parent) {
-    //先进入list,查看能不能对应,再返回来查index的值
+    //点击完成时,要得到当前事件的序号是多少
     var index = 0
     for(var i = 0; i < getObjLength(TODO); i++) {
-        if(TODO[i].text == parent.querySelector(".span-text").innerHTML &&
-            TODO[i].startTime == parent.querySelector(".span-startTime").innerHTML) {
-            //这时i就选对了
-            // log(i)
-            // log(index)
+        if(i == parent.querySelector('.span-index').innerText) {
             index = i
         }
     }
@@ -123,20 +192,30 @@ var bindEventClickFinishDeleteEdit = function (TODO) {
         var target = event.target
         var parent = target.parentNode
         if (target.classList.contains('button-finish')) {
-            if (target.innerHTML == '完成') {
-                target.innerHTML = '取消完成'
+
+            var index = getIndexTODO(TODO, parent)
+            //点击完成时,如果还未完成,就把图标换成cancel
+            if (!TODO[index].finished) {
+                target.innerHTML = `
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-cancel"></use>
+                    </svg>
+                `
+                TODO[index].finished = true
                 //把编辑按钮改成灰色
                 parent.querySelector(".button-edit").disabled = true
-            } else if (target.innerHTML = '取消完成') {
-                target.innerHTML = '完成'
+            } else {
+                target.innerHTML = `
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-wancheng"></use>
+                    </svg>
+                `
+                TODO[index].finished = false
                 parent.querySelector(".button-edit").disabled = false
             }
 
             //改变它的样式,要获取到当前的list
             var endTime = getTime()
-
-            //i是当前list的序列号
-            var index = getIndexTODO(TODO, parent)
 
             if (parent.querySelector(".span-endTime").innerHTML) {
                 parent.querySelector(".span-endTime").innerHTML = ''
@@ -146,23 +225,28 @@ var bindEventClickFinishDeleteEdit = function (TODO) {
                 TODO[index].endTime = `endTime: + ${endTime}`
             }
 
+            toggleClass(parent.querySelector(".span-index"), "finished")
             toggleClass(parent.querySelector(".span-text"), "finished")
             toggleClass(parent.querySelector(".span-startTime"), "finished")
             toggleClass(parent.querySelector(".span-endTime"), "finished")
 
             save(TODO)
         } else if (target.classList.contains('button-delete')) {
-            parent.remove()
-            var index = getIndexTODO(TODO, parent)
-            //移除这个TODO
-            TODO.splice(index,1)
-            //那么,index之后的list的index全部-1
-            for(var i = index; i < getObjLength(TODO); i++) {
-                if(TODO[i]) {
-                    TODO[i].index = TODO[i].index - 1
+            if (!confirm("确认要删除？")) {
+                log('你咋反悔了?')
+            }else {
+                parent.remove()
+                var index = getIndexTODO(TODO,parent)
+                //移除这个TODO
+                TODO.splice(index,1)
+                //那么,index之后的list的index全部-1
+                for(var i = index; i < getObjLength(TODO); i++) {
+                    if(TODO[i]) {
+                        TODO[i].index = TODO[i].index - 1
+                    }
                 }
+                save(TODO)
             }
-            save(TODO)
         } else if (target.classList == 'button-edit') {
             var span = parent.querySelector(".span-text")
             span.setAttribute('contenteditable', 'true')
@@ -172,7 +256,7 @@ var bindEventClickFinishDeleteEdit = function (TODO) {
 }
 
 //绑定Enter
-var bindEventKeydown = function (TODO) {
+var bindEventKeydown = function () {
     $('#id-div-todoList').on('keydown', function (event) {
         var edits = $('.span-text')
         for (var i = 0; i < edits.length; i++) {
