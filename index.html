@@ -1,49 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="a TODO application">
+    <meta name="author" content="liwenkang">
+    <!--设置一个todo的图标-->
+    <link rel="icon" href="todo.icon">
     <title>ToDoList</title>
 
-    <!--css-->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/reset.css">
+    <!--CSS-->
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/cover.css" rel="stylesheet">
     <!--引入图标-->
     <script src="javascript/iconfont.js"></script>
     <style type="text/css">
         .icon {
-            width: 1em; height: 1em;
+            width: 1em;
+            height: 1em;
             vertical-align: -0.15em;
             fill: currentColor;
             overflow: hidden;
         }
     </style>
 
-    <!--js-->
+    <!--JavaScript-->
     <script src="javascript/jquery-3.2.1.js"></script>
     <script src="javascript/tools.js"></script>
     <script src="javascript/main.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
+<div class="site-wrapper">
+    <div class="site-wrapper-inner">
+        <div class="cover-container">
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">TODO</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li class="active"><a href="#" id="id-a-home">Home</a></li>
+                            <li><a href="http://www.github.com/liwenkang">Contact By Github</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
 
-<div>
-    <div>
-        <input type="text" id="id-input-text">
-        <button id="id-button-add" type="button">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-iconjia"></use>
-            </svg>
-        </button>
-        <button id="id-button-RESET">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-zhongzhi"></use>
-            </svg>
-        </button>
+            <div class="inner cover" id="id-div-start">
+                <h1 class="cover-heading">This is a TODO application for you!</h1>
+                <p class="lead"></p>
+                <p class="lead">
+                    <button class="btn btn-lg btn-default" id="id-button-start">Start</button>
+                </p>
+            </div>
+
+            <div class="inner cover hidden" id="id-div-list">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="id-input-text"></label>
+                        <input type="text" class="form-control" id="id-input-text" placeholder="Enter your TODO!" autocomplete="off">
+                    </div>
+                    <button id="id-button-add" type="button" class="btn btn-info btn-lg">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-iconjia"></use>
+                        </svg>
+                    </button>
+
+                    <button id="id-button-RESET" type="reset" class="btn btn-danger btn-lg">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-zhongzhi"></use>
+                        </svg>
+                    </button>
+                </form>
+                <div id="id-div-todoList"></div>
+            </div>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <a href="/todo/all" download="ToDoList.json" id="id-a-download" class="hidden">Please click here to download your TODOList! ミ(ﾉ゜д゜)ﾉ</a>
+                    <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="http://www.github.com/liwenkang">@liwenkang</a>.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="id-div-todoList"></div>
 </div>
-
-<!--<input type="file" id="id-input-userData">-->
-<!--<a href="">点击导入您的todo列表(注意为JSON格式)</a>-->
-<a href="/todo/all" download="ToDoList.json">点击此处下载您的todo列表(注意为JSON格式)</a>
 </body>
 </html>
