@@ -1,4 +1,5 @@
 //问题:使用node.js的框架express时,无法正确写入数据
+//解决方案:使用jqery进行ajax操作时,数据要存成{obj: value}的形式,再转成JSON格式
 
 //具体描述:index.html中引入的save函数如下所示,想要写入 $('#id-div-todoList').html() 这个字符串到文件data里面
 var save = function () {

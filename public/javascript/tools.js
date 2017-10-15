@@ -189,7 +189,6 @@ var getObjLength = function (obj) {
         }
     }
     return count
-
     //不考虑扩展对象时，可以用下面的
     //return Object.getOwnPropertyNames(obj).length
 }
