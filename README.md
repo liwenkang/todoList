@@ -28,24 +28,24 @@ yarn add body-parser
 <pre>
 ├─src
 │    ├─css
-│    │      bootstrap.min.css						// bootstrap 框架
-│    │      cover.css								// 主 css
-│    │      ie10-viewport-bug-workaround.css		// bootstrap 在 ie10 环境下的bug修复
-│    │      reset.css								// css 重置
+│    │      bootstrap.min.css                     // bootstrap 框架
+│    │      cover.css                             // 主 css
+│    │      ie10-viewport-bug-workaround.css      // bootstrap 在 ie10 环境下的 bug 修复
+│    │      reset.css                             // css 重置
 │    │
 │    └─javascript
-│            bug.js									// 记录了一些小问题
-│            iconfont.js							// 图标
-│            jquery-3.2.1.js						// jQuery 框架
-│            main.js								// 主逻辑		
-│            tools.js	  							// 工具
+│            bug.js                               // 记录了一些小问题
+│            iconfont.js                          // 图标
+│            jquery-3.2.1.js                      // jQuery 框架
+│            main.js                              // 主逻辑		
+│            tools.js                             // 工具
 │
-├─data												// 数据存放
-├─index.html										// 首页
-├─package.json										// 配置相关
+├─data                                            // 数据存放
+├─index.html                                      // 首页
+├─package.json                                    // 配置相关
 ├─README.md									
-├─server.js											// 主服务
-└─yarn.lock											// yarn 自动生成文件
+├─server.js                                       // 主服务
+└─yarn.lock                                       // yarn 自动生成文件
 </pre>
 
 #### 存在的问题:
