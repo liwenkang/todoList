@@ -1,19 +1,12 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "a todo list app",
-  "main": "express.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/liwenkang/todoList.git"
-  },
+  "description": "a small todo application",
+  "main": "main.js",
   "author": "liwenkang",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/liwenkang/todoList/issues"
-  },
-  "homepage": "https://github.com/liwenkang/todoList#readme"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
 }
